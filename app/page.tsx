@@ -57,7 +57,8 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="container mx-auto px-20 py-16 md:py-28">
+      <section className="bg-white">
+        <div className="container mx-auto px-6 lg:px-20 py-16 md:py-28">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
             <div className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700 border border-blue-100 uppercase tracking-wider">
@@ -94,10 +95,11 @@ export default function Home() {
             <div className="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-400/10 blur-[100px] rounded-full" />
           </div>
         </div>
+        </div>
       </section>
 
       {/* Stats Section */}
-      <section className="border-y border-slate-100 bg-slate-50/40">
+      <section className="border-y border-slate-100 bg-slate-50">
         <div className="container mx-auto px-6 py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             {[
@@ -118,9 +120,13 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-6 py-24 md:py-32">
-        <div className="text-center mb-20 space-y-4">
-          <h2 className="text-4xl font-bold tracking-tight text-slate-900">Platform Features</h2>
+      <section className="bg-white">
+        <div className="container mx-auto px-6 py-24 md:py-32">
+        <div className="text-center mb-20">
+          <div className="inline-block px-3 py-1 text-[10px] font-bold tracking-[0.2em] text-blue-600 uppercase bg-blue-50 rounded-full mb-4">
+            Powerful Features
+          </div>
+          <h2 className="text-4xl font-bold tracking-tight text-slate-900 mb-4">Platform Features</h2>
           <p className="text-slate-500 max-w-2xl mx-auto text-lg">
             Designed to empower citizens and streamline city maintenance through digital innovation.
           </p>
@@ -143,10 +149,15 @@ export default function Home() {
             desc="Contribute to long-term planning. Your data helps authorities prioritize major development projects."
           />
         </div>
+        </div>
       </section>
 
       {/* How It Works Section */}
-      <section className="container mx-auto px-6 py-24 text-center">
+      <section className="bg-slate-50 border-y border-slate-100">
+        <div className="container mx-auto px-6 py-24 text-center">
+        <div className="inline-block px-3 py-1 text-[10px] font-bold tracking-[0.2em] text-blue-600 uppercase bg-blue-50 rounded-full mb-4">
+          Seamless Process
+        </div>
         <h2 className="text-4xl font-extrabold mb-4 tracking-tight">How It Works</h2>
         <p className="text-slate-500 mb-20 max-w-2xl mx-auto">
           A transparent 4-step process to ensure every concern is addressed efficiently:
@@ -179,6 +190,7 @@ export default function Home() {
               isActive={true} // This makes the last one Green
             />
           </div>
+        </div>
         </div>
       </section>
       <Footer />
