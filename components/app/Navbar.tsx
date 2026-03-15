@@ -11,8 +11,8 @@ const Navbar = () => {
                 <div className="bg-blue-600 p-1.5 rounded-lg">
                     <Building2 className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold text-slate-900 tracking-tight">
-                    CitizenCare
+                <span className="text-2xl font-extrabold text-slate-900 tracking-tight">
+                    CitiCare
                 </span>
             </div>
 

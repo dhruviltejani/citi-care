@@ -13,7 +13,7 @@ export const Footer = () => {
                 <div className="col-span-1 md:col-span-2 space-y-6">
                     <div className="flex items-center gap-2 font-bold text-2xl text-blue-600">
                         <ShieldCheck className="w-8 h-8" />
-                        CitizenCare
+                        CitiCare
                     </div>
                     <p className="text-slate-500 text-md leading-relaxed max-w-sm">
                         Empowering communities through digital accountability. Working together for a smarter, cleaner city environment.
