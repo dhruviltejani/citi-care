@@ -106,7 +106,7 @@ export default function LoginPage() {
               <div className="text-center pt-2">
                 <p className="text-slate-500 font-medium">
                   New to CitiCare?{" "}
-                  <Link href="/register" className="text-blue-600 font-bold hover:underline underline-offset-4">
+                  <Link href="/register" className="text-blue-600 font-bold hover:underline underline-offset-4 cursor-pointer">
                     Register Now
                   </Link>
                 </p>

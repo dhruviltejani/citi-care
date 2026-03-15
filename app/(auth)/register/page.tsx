@@ -1,5 +1,7 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 import React, { useState } from 'react';
 import { 
   ShieldCheck, UserCheck, Zap, ArrowRight, Lock, 
@@ -14,16 +16,16 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function SimpleRegistration() {
   // 1. Single state object for the whole form
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    phone: "",
+    mobile: "",
     city: "",
-    address: "",
     password: "",
-    confirmPassword: "",
-    terms: false,
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [terms, setTerms] = useState(false);
 
   // 2. Simple handler for all inputs
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,19 +33,34 @@ export default function SimpleRegistration() {
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    console.log("Form Data Submitted:", formData);
-    alert("Check the console! Form submitted successfully.");
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+      const data = await response.json();
+      console.log(data);
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <Card className="w-full max-w-5xl overflow-hidden border-none shadow-2xl rounded-3xl">
+      <Card className="w-full max-w-5xl overflow-hidden border-none shadow-2xl rounded-3xl p-0">
         <CardContent className="p-0 flex flex-col md:flex-row">
           
           {/* --- Left Branding Section --- */}
@@ -77,7 +94,7 @@ export default function SimpleRegistration() {
           {/* --- Right Form Section --- */}
           <div className="w-full md:w-[60%] bg-white p-8 md:p-12">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-slate-900">Citizen Registration</h1>
+              <h1 className="text-3xl font-extrabold text-slate-900">Citizen Registration</h1>
               <p className="text-slate-500 text-sm mt-1">Create your official account to access services.</p>
             </div>
 
@@ -87,14 +104,14 @@ export default function SimpleRegistration() {
                   <Label htmlFor="fullName">Full Name</Label>
                   <div className="relative">
                     <UserCheck className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                    <Input id="fullName" placeholder="John Doe" className="pl-10" value={formData.fullName} onChange={handleChange} required />
+                    <Input id="fullName" placeholder="Enter your name" className="pl-10" value={formData.name} onChange={handleChange} required />
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="email">Email Address</Label>
-                  <div className="relative">
+                  <div className="relative ">
                     <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                    <Input id="email" type="email" placeholder="john@example.com" className="pl-10" value={formData.email} onChange={handleChange} required />
+                    <Input id="email" type="email" placeholder="Enter your email" className="pl-10" value={formData.email} onChange={handleChange} required />
                   </div>
                 </div>
               </div>
@@ -104,23 +121,15 @@ export default function SimpleRegistration() {
                   <Label htmlFor="phone">Phone Number</Label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                    <Input id="phone" placeholder="+1 (555) 000-0000" className="pl-10" value={formData.phone} onChange={handleChange} />
+                    <Input id="phone" placeholder="Enter your number" className="pl-10" value={formData.mobile} onChange={handleChange} />
                   </div>
                 </div>
                 <div className="space-y-1.5">
                   <Label htmlFor="city">City</Label>
                   <div className="relative">
                     <Building2 className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                    <Input id="city" placeholder="Washington D.C." className="pl-10" value={formData.city} onChange={handleChange} />
+                    <Input id="city" placeholder="Enter your city" className="pl-10" value={formData.city} onChange={handleChange} />
                   </div>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="address">Residential Address</Label>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                  <Input id="address" placeholder="123 Government Way, Apt 4B" className="pl-10" value={formData.address} onChange={handleChange} />
                 </div>
               </div>
 
@@ -136,7 +145,7 @@ export default function SimpleRegistration() {
                   <Label htmlFor="confirmPassword">Confirm Password</Label>
                   <div className="relative">
                     <ShieldCheck className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                    <Input id="confirmPassword" type="password" placeholder="••••••••" className="pl-10" value={formData.confirmPassword} onChange={handleChange} required />
+                    <Input id="confirmPassword" type="password" placeholder="••••••••" className="pl-10" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
                   </div>
                 </div>
               </div>
@@ -144,8 +153,8 @@ export default function SimpleRegistration() {
               <div className="flex items-start space-x-3 pt-2">
                 <Checkbox 
                   id="terms" 
-                  checked={formData.terms} 
-                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, terms: checked as boolean }))} 
+                  checked={terms} 
+                  onCheckedChange={(checked) => setTerms(checked as boolean)} 
                 />
                 <label htmlFor="terms" className="text-xs text-slate-500 leading-tight">
                   I agree to the <span className="text-blue-600 font-bold">Terms of Service</span> and <span className="text-blue-600 font-bold">Privacy Policy</span>.
@@ -157,7 +166,7 @@ export default function SimpleRegistration() {
               </Button>
 
               <p className="text-center text-xs text-slate-500">
-                Already have an account? <span className="text-blue-600 font-bold cursor-pointer underline-offset-4 hover:underline">Login here</span>
+                Already have an account? <span className="text-blue-600 font-bold cursor-pointer underline-offset-4 hover:underline cursor-pointer" onClick={() => router.push("/login")}>Login here</span>
               </p>
             </form>
           </div>
