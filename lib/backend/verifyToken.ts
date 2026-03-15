@@ -21,6 +21,7 @@ export const getCurrentUser = async (req: Request) => {
         ) as JwtPayload;
 
         return {
+            id: decoded.id,
             name: decoded.name,
             email: decoded.email
         };
