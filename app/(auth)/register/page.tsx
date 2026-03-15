@@ -101,10 +101,10 @@ export default function SimpleRegistration() {
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="fullName">Full Name</Label>
+                  <Label htmlFor="name">Full Name</Label>
                   <div className="relative">
                     <UserCheck className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                    <Input id="fullName" placeholder="Enter your name" className="pl-10" value={formData.name} onChange={handleChange} required />
+                    <Input id="name" placeholder="Enter your name" className="pl-10" value={formData.name} onChange={handleChange} required />
                   </div>
                 </div>
                 <div className="space-y-1.5">
