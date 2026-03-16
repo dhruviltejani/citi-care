@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import { loginUser } from "@/app/actions/auth";
+import { toast } from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function LoginPage() {
       } else {
         router.push("/dashboard");
         router.refresh();
+        toast.success("Welcome back");
       }
     } catch (err) {
       setError("An unexpected error occurred. Please try again.");

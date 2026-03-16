@@ -8,6 +8,7 @@ import {
   Mail, Phone, MapPin, Building2, Loader2
 } from 'lucide-react';
 
+import { toast } from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,21 +45,23 @@ export default function SimpleRegistration() {
       return;
     }
     try {
-      const response = await fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
+      const response = await registerUser(formData);
+      if (!response.success) {
         throw new Error("Registration failed");
       }
-      const data = await response.json();
-      console.log(data);
-      router.push("/login");
+      router.push("/dashboard");
+      toast.success("Registration successful");
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false)
+      setFormData({
+        name: "",
+        email: "",
+        mobile: "",
+        city: "",
+        password: "",
+      })
     }
   };
 
