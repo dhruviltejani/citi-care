@@ -6,7 +6,7 @@ enum ComplaintStatus {
     RESOLVED = "resolved",
 }
 
-enum ComplaintCategory {
+export enum ComplaintCategory {
     ROAD = "road",
     GARBAGE = "garbage",
     WATER = "water",
@@ -37,14 +37,8 @@ const ComplaintSchema = new Schema(
         },
 
         location: {
-            address: { type: String, required: true },
-            city: { type: String },
-            state: { type: String },
-            pincode: { type: String },
-            coordinates: {
-                lat: Number,
-                lng: Number,
-            },
+            lat: Number,
+            lng: Number,
         },
 
         images: [

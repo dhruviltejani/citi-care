@@ -48,7 +48,7 @@ export async function POST(req: Request) {
         );
 
         const response = NextResponse.json(
-            { message: "User registered successfully" },
+            { success: true, message: "User registered successfully" },
             { status: 201 }
         );
 

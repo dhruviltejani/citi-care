@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 
 import React, { useState } from 'react';
-import { 
-  ShieldCheck, UserCheck, Zap, ArrowRight, Lock, 
-  Mail, Phone, MapPin, Building2 
+import {
+  ShieldCheck, UserCheck, Zap, ArrowRight, Lock,
+  Mail, Phone, MapPin, Building2, Loader2
 } from 'lucide-react';
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
 
+import { registerUser } from '@/app/actions/auth';
 export default function SimpleRegistration() {
   // 1. Single state object for the whole form
   const router = useRouter();
@@ -27,10 +28,13 @@ export default function SimpleRegistration() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [terms, setTerms] = useState(false);
 
-  // 2. Simple handler for all inputs
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
+    if (error) setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -62,7 +66,7 @@ export default function SimpleRegistration() {
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-5xl overflow-hidden border-none shadow-2xl rounded-3xl p-0">
         <CardContent className="p-0 flex flex-col md:flex-row">
-          
+
           {/* --- Left Branding Section --- */}
           <div className="w-full md:w-[40%] bg-blue-50 p-10 flex flex-col items-center justify-center text-center">
             <div className="relative mb-6">
@@ -79,7 +83,7 @@ export default function SimpleRegistration() {
               Join thousands of citizens accessing official government services securely.
             </p>
 
-            <div className="w-full space-y-3">
+            <div className="w-full space-y-3 text-left">
               <div className="bg-white p-3 rounded-xl flex items-center gap-3 shadow-sm border border-slate-100">
                 <Lock size={16} className="text-blue-500" />
                 <span className="text-xs font-semibold text-slate-600">End-to-end encryption</span>
@@ -99,6 +103,13 @@ export default function SimpleRegistration() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Error Alert */}
+              {error && (
+                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-lg">
+                  {error}
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="name">Full Name</Label>
@@ -118,10 +129,10 @@ export default function SimpleRegistration() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <Label htmlFor="phone">Phone Number</Label>
+                  <Label htmlFor="mobile">Phone Number</Label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                    <Input id="phone" placeholder="Enter your number" className="pl-10" value={formData.mobile} onChange={handleChange} />
+                    <Input id="mobile" placeholder="+1 (555) 000-0000" className="pl-10" value={formData.mobile} onChange={handleChange} />
                   </div>
                 </div>
                 <div className="space-y-1.5">
@@ -151,18 +162,26 @@ export default function SimpleRegistration() {
               </div>
 
               <div className="flex items-start space-x-3 pt-2">
-                <Checkbox 
-                  id="terms" 
-                  checked={terms} 
-                  onCheckedChange={(checked) => setTerms(checked as boolean)} 
+                <Checkbox
+                  id="terms"
+                  checked={terms}
+                  onCheckedChange={(checked) => setTerms(checked as boolean)}
                 />
-                <label htmlFor="terms" className="text-xs text-slate-500 leading-tight">
+                <label htmlFor="terms" className="text-xs text-slate-500 leading-tight cursor-pointer select-none">
                   I agree to the <span className="text-blue-600 font-bold">Terms of Service</span> and <span className="text-blue-600 font-bold">Privacy Policy</span>.
                 </label>
               </div>
 
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 h-12 rounded-xl font-bold">
-                Create Citizen Account <ArrowRight className="ml-2 h-4 w-4" />
+              <Button
+                disabled={loading}
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-700 h-12 rounded-xl font-bold transition-all"
+              >
+                {loading ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <>Create Citizen Account <ArrowRight className="ml-2 h-4 w-4" /></>
+                )}
               </Button>
 
               <p className="text-center text-xs text-slate-500">
